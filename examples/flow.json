@@ -1,0 +1,106 @@
+[
+    {
+        "id": "8762680855da1d66",
+        "type": "tab",
+        "label": "Meross Plug Metering",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1e7bbc630d65dfa1",
+        "type": "MerossEnergy",
+        "z": "8762680855da1d66",
+        "name": "",
+        "username": "you@domain.com",
+        "password": "TopSecret",
+        "x": 130,
+        "y": 40,
+        "wires": [
+            [
+                "2c5691daeb480d1a"
+            ]
+        ]
+    },
+    {
+        "id": "5cc69e05359bf950",
+        "type": "debug",
+        "z": "8762680855da1d66",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "a863084eabcb97c7",
+        "type": "mqtt out",
+        "z": "8762680855da1d66",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a20683be020876dd",
+        "x": 650,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "2c5691daeb480d1a",
+        "type": "function",
+        "z": "8762680855da1d66",
+        "name": "Split into MQTT Topics",
+        "func": "for (const [key, value] of Object.entries(msg.payload)) {\n    node.send({\n        topic:msg.topic + \"/\" + key,\n        payload:value\n    });\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 40,
+        "wires": [
+            [
+                "a863084eabcb97c7",
+                "5cc69e05359bf950"
+            ]
+        ]
+    },
+    {
+        "id": "a20683be020876dd",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]

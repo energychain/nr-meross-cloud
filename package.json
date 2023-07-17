@@ -1,0 +1,40 @@
+{
+  "name": "nr-meross-cloud",
+  "version": "0.1.0",
+  "description": "Node-RED Node to get Energy Data of Meross SmartPlug (like MSS310)",
+  "main": "lib.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energychain/nr-meross-cloud.git"
+  },
+  "keywords": [
+    "node-red",
+    "meross",
+    "cloud",
+    "mqtt",
+    "corrently",
+    "current",
+    "smartplug"
+  ],
+  "author": "STROMDAO GmbH <dev@stromdao.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/energychain/nr-meross-cloud/issues"
+  },
+  "homepage": "https://github.com/energychain/nr-meross-cloud#readme",
+  "dependencies": {
+    "meross-cloud": "^2.4.1"
+  },
+  "node-red": {
+    "version": ">=2.1.0",
+    "nodes": {
+      "MerossEnergy": "nr-meross-cloud.js"
+    }
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
