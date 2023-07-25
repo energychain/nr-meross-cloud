@@ -48,20 +48,25 @@ module.exports = function(RED) {
                    
                         device.getControlElectricity((err, res) => {
                             try {
-                            res.electricity.device = deviceDef;
-    
-                            node.send({
-                                topic:deviceId,
-                                payload:res.electricity
-                            });
-                            
-                            node.status({ fill: "green", shape: "dot", text: ""+(res.electricity.current/10)+"W "+(res.electricity.voltage/10)+"V"});
+                                if(typeof res !== 'undefined') {
+                                    res.electricity.device = deviceDef;
+            
+                                    node.send({
+                                        topic:deviceId,
+                                        payload:res.electricity
+                                    });
+                                    
+                                    node.status({ fill: "green", shape: "dot", text: ""+(res.electricity.current/10)+"W "+(res.electricity.voltage/10)+"V"});
+                                } else 
+                                if(err) {
+                                    throw "API Error"+err;
+                                }
                             } catch(e) {
                                 node.status({ fill: "red", shape: "dot", text: "Exception:"+e});
                             }
                         });
                    
-                },5000);
+                },15000);
                 
              });    
         });
