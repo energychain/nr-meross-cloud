@@ -12,6 +12,8 @@ module.exports = function(RED) {
             timeout: 25000 
         };
         const node = this;
+        let initialized = false;
+        let device = null;
 
         const meross = new MerossCloud(options);
         console.log("Finished Setup Meross");
@@ -40,49 +42,32 @@ module.exports = function(RED) {
             console.log('connect error: ' + error);
         });
 
-        meross.on('deviceInitialized', (deviceId, deviceDef, device) => {
+        meross.on('deviceInitialized', (deviceId, deviceDef, mdevice) => {
             node.status({ fill: "red", shape: "dot", text: "connecting"});
-            device.on('connected', () => {
+            mdevice.on('connected', () => {
                 node.status({ fill: "yellow", shape: "dot", text: "connecting"});
-                setInterval(function() {
-                        device.
-                        device.getControlElectricity((err, res) => {
-                            try {
-                                if(typeof res !== 'undefined') {
-                                    res.electricity.device = deviceDef;
-            
-                                    node.send({
-                                        topic:deviceId,
-                                        payload:res.electricity
-                                    });
-                                    
-                                    node.status({ fill: "green", shape: "dot", text: ""+(res.electricity.current/10)+"W "+(res.electricity.voltage/10)+"V"});
-                                } else 
-                                if(err) {
-                                    throw "API Error"+err;
-                                }
-                            } catch(e) {
-                                node.status({ fill: "red", shape: "dot", text: "Exception:"+e});
-                            }
-                        });
-                   
-                },20000);         
+                initialized = true;
+                device = mdevice;
              });    
         });
         
-       /*
+       
         node.on('input', async function(msg) {
+            while(!initialized) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
             try {
-                
-                node.send(msg);
-                node.status({ fill: "green", shape: "dot", text: "Local:"+latest.localprice+" / National:"+latest.marketprice});
+                device.controlToggleX(config.channel, msg.payload, (err, res) => {   
+                    node.send({
+                        payload:res
+                    });
+                });
             }
            catch(e) {
-                node.status({ fill: "red", shape: "dot", text: "Unable to retrieve from API"});
+                node.status({ fill: "red", shape: "dot", text: "API Error"});
                 console.log(e);
            }
         });
-        */
     }
     RED.nodes.registerType("MerossEnergy",Reader);
 }

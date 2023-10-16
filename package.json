@@ -1,6 +1,6 @@
 {
   "name": "nr-meross-cloud",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Node-RED Node to get Energy Data of Meross SmartPlug (like MSS310)",
   "main": "lib.js",
   "scripts": {
@@ -31,7 +31,8 @@
   "node-red": {
     "version": ">=2.1.0",
     "nodes": {
-      "MerossEnergy": "nr-meross-cloud.js"
+      "MerossEnergy": "nr-meross-cloud.js",
+      "MerossSwitch": "nr-meross-cloud-switch.js"
     }
   },
   "engines": {
